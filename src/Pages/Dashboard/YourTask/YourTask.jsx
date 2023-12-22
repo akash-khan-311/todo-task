@@ -3,17 +3,19 @@
 import useApi from "../../../Hooks/useApi";
 import useAuth from "../../../Hooks/useAuth";
 
-
-
-
 const YourTask = () => {
-  const {user} = useAuth();
+  const { user } = useAuth();
   const [refetch, isLoading, data] = useApi(`/tasks?email=${user.email}`);
-
-
-
-  return <div>
-     <div className="relative flex flex-col w-full h-full overflow-y-hidden overflow-x-auto text-gray-700 backdrop-blur-md bg-white/20 shadow-md rounded-xl bg-clip-border">
+  if (isLoading)
+    return (
+      <div className="text-5xl text-white text-center flex justify-center items-center min-h-screen">
+        Loading.....
+      </div>
+    );
+  console.log(data);
+  return (
+    <div>
+      <div className="relative flex flex-col w-full h-full overflow-y-hidden overflow-x-auto text-gray-700 backdrop-blur-md bg-white/20 shadow-md rounded-xl bg-clip-border">
         <table className="w-full text-left table-auto min-w-max">
           <thead>
             <tr>
@@ -29,12 +31,12 @@ const YourTask = () => {
               </th>
               <th className="p-4 border-b border-blue-gray-100 ">
                 <p className="block font-sans antialiased font-normal leading-none text-white opacity-70">
-                Status
+                  Status
                 </p>
               </th>
               <th className="p-4 border-b border-blue-gray-100 ">
                 <p className="block font-sans antialiased font-normal leading-none text-white opacity-70">
-                 Deadline
+                  Deadline
                 </p>
               </th>
               <th className="p-4 border-b border-blue-gray-100 ">
@@ -69,22 +71,16 @@ const YourTask = () => {
                 </td>
                 <td className="p-4 border-b border-blue-gray-50">
                   <p className="block font-sans antialiased font-normal leading-normal text-white">
-                   {task.deadline}
+                    {task.deadline}
                   </p>
                 </td>
                 <td className="p-4 border-b border-blue-gray-50">
-                <button
-                    
-                    className="block font-sans antialiased text-sm  bg-green-600 px-2 rounded text-white "
-                  >
+                  <button className="block font-sans antialiased text-sm  bg-green-600 px-2 rounded text-white ">
                     Edit
                   </button>
                 </td>
                 <td className="p-4 border-b border-blue-gray-50">
-                  <button
-                    
-                    className="block font-sans antialiased text-sm  bg-red-600 px-2 rounded text-white "
-                  >
+                  <button className="block font-sans antialiased text-sm  bg-red-600 px-2 rounded text-white ">
                     Delete
                   </button>
                 </td>
@@ -92,8 +88,9 @@ const YourTask = () => {
             ))}
           </tbody>
         </table>
+      </div>
     </div>
-  </div>;
+  );
 };
 
 export default YourTask;

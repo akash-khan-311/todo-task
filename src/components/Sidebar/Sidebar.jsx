@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MdDashboard,MdTask  } from "react-icons/md";
+import { MdTask  } from "react-icons/md";
 import { IoIosCreate } from "react-icons/io";
 import { FaTasks,FaHome  } from "react-icons/fa";
 import { CgLogOut } from "react-icons/cg";
@@ -49,11 +49,7 @@ const Sidebar = () => {
             <h2 className="text-3xl text-white text-center py-1">{user && user.displayName}</h2>
            
         <hr />
-        <MenuItems
-          icon={MdDashboard}
-          label={"Dashboard"}
-          address={"/dashboard"}
-        />
+      
         <MenuItems
           icon={IoIosCreate}
           label={"Create Task"}
