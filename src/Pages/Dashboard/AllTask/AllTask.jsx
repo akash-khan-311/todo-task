@@ -65,7 +65,7 @@ const AllTask = () => {
                     {task.title}
                   </h3>
                   <span className="text-sm text-gray-500">
-                    {task.descriptions}
+                   {` ${task.descriptions.slice(0,15)}`}
                   </span>
                 </td>
                 <td className="p-4 border-b border-blue-gray-50">
@@ -78,8 +78,6 @@ const AllTask = () => {
                    {task.deadline}
                   </p>
                 </td>
-              
-              
               </tr>
             ))}
           </tbody>
