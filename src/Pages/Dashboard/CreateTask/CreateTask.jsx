@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axiosPublic from "../../../api/AxiosPublic";
 import useAuth from "./../../../Hooks/useAuth";
 import Swal from "sweetalert2";
@@ -7,7 +7,19 @@ import toast from "react-hot-toast";
 
 const CreateTask = () => {
   const [priorityValue, setPriorityValue] = useState("");
+  const [minDate, setMinDate] = useState("");
+  const [date, setDate] = useState(null);
   const { user } = useAuth();
+
+  console.log('new date here',date)
+
+
+
+  useEffect(() => {
+    // Get today's date in the format YYYY-MM-DD
+    const today = new Date().toISOString().split("T")[0];
+    setMinDate(today);
+  }, []);
 
   const {
     register,
@@ -30,21 +42,23 @@ const CreateTask = () => {
         title: title,
         priority: priority,
         descriptions: descriptions,
+        deadline: date,
+        status: 'ongoing',
       };
       const { data } = await axiosPublic.post("/tasks", tasks);
-      if(data.acknowledged){
+      if (data.acknowledged) {
         Swal.fire({
           position: "center",
           icon: "success",
           title: "Task has been created",
           showConfirmButton: false,
-          timer: 1500
+          timer: 1500,
         });
-        reset()
+        reset();
       }
     } catch (error) {
       console.log(error);
-      toast.error('Task creation error', error);
+      toast.error("Task creation error", error);
     }
   };
 
@@ -57,7 +71,7 @@ const CreateTask = () => {
         {/* Create new task */}
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-96 backdrop-blur-3xl bg-white/10 p-8 rounded-md"
+          className="w-96 mx-auto backdrop-blur-3xl bg-white/10 p-8 rounded-md"
         >
           <h3 className="text-3xl text-center text-white border-b-2 mb-3">
             Create Task
@@ -117,11 +131,23 @@ const CreateTask = () => {
               <option className="text-black" value="Completed">
                 Completed
               </option>
-           
             </select>
             <label className="before:content[' '] after:content[' '] pointer-events-none  absolute left-0 -top-1.5 flex  w-full select-none  font-normal leading-tight text-white transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-white peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-white peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-white peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
               Status
             </label>
+          </div>
+          <div className="relative mt-5 min-w-[200px] flex justify-between items-center ">
+            <label className="text-white font-semibold " htmlFor="dateInput">
+              Select Date:
+            </label>
+            <input
+            onChange={(e)=> setDate(e.target.value)}
+              type="date"
+              id="dateInput"
+              name="dateInput"
+              min={minDate}
+              className="bg-transparent border  p-2 text-white "
+            />
           </div>
 
           <div className="w-full mt-5">
